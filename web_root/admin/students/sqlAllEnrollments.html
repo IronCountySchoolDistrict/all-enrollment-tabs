@@ -8,8 +8,8 @@
         sec.schoolid,
         sec.termid,
         sec.ID,
+        sec.DCID,
         cc.DateEnrolled, cc.DateLeft, ter.Abbreviation term,
-        cc.Expression,
         crs.Course_Name, cc.Course_Number, cc.Section_Number, t.LastFirst teacher, cc.DCID
         FROM CC
         INNER JOIN Teachers t ON cc.TeacherID = t.ID
@@ -25,10 +25,10 @@
         "schoolId": "~(schoolid)",
         "termId": "~(termId)",
         "id": "~(id)",
+        "secDcid": "~(secdcid)",
         "dateEnrolled": "~(dateEnrolled;d)",
         "dateLeft": "~(dateLeft;d)",
         "term": "~(term)",
-        "expression": "~(expression)",
         "courseName": "~(courseName)",
         "courseNumber": "~(courseNumber)",
         "sectionNumber": "~(sectionNumber)",

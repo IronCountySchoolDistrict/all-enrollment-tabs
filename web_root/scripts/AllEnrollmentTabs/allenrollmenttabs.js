@@ -4,7 +4,7 @@
  * Create the context for the year tabs template.
  * @param jsonData {Object} parsed response data from sqlYearsAttended.html.
  * @param psData {Object} Data provided by powerschool tags, parsed as JSON from the #ps-data div.
- * @returns {Object} Object that contains data needed to render tabs. Matches the form:
+ * @returns {Object} Object that contains data needed to render tabs.
  *  {
  *      "showAllTab": {boolean} - should the Show All tab be displayed?
  *      "tabs": {Array} - Array of Objects that contain the link_href, tab_class, term and yearId properties.
@@ -103,55 +103,62 @@ function createEnrollmentsUri(psData) {
 
         // Handle tabs
         $j.get(yearsAttendedUri, function (data) {
-            var jsonData = JSON.parse(data);
-            jsonData.splice(-1, 1); //Last element will always be empty, so remove it.
-            var tabsContext = createTabsContext(jsonData, psData);
+            data.splice(-1, 1); //Last element will always be empty, so remove it.
+            var tabsContext = createTabsContext(data, psData);
 
             var template = $j('#tabs-template').html();
             var renderedTemplate = _.template(template, {context: tabsContext});
             $j(renderedTemplate).insertBefore('.box-round');
-        });
+        }, 'json');
 
         // Handle table
-        $j.get(enrollmentsUri, function (data) {
-            $j('jqgridx').remove(); //remove old table
+        $j.get(enrollmentsUri, function (enrollmentsData) {
+            $j('.jqgridx').remove(); //remove old table
 
             // get and render new table
-            var jsonData = JSON.parse(data);
-            jsonData.splice(-1, 1); //Last element will always be empty, so remove it.
+            enrollmentsData.splice(-1, 1); //Last element will always be empty, so remove it.
 
             var displayDuplicateMsg = false;
             var checkDuplicateUri = '/admin/students/checkdup.html?frn=' + psData.frn;
-            $j.get(checkDuplicateUri, function (data) {
-                $j('#hidden-content').html(data);
+            $j.get(checkDuplicateUri, function (checkDupData) {
+                $j('#hidden-content').html(checkDupData);
                 displayDuplicateMsg = dupCC;
-
-                var template = $j('#table-template').html();
-                var context = {
-                    rows: jsonData
-                };
-                var renderedTemplate = _.template(template, context);
-
-                $j('.box-round').html(renderedTemplate); //insert new table
-
-                $j('#enrollments-table').dataTable({
-                    "bPaginate": false,
-                    "bFilter": true,
-                    "bJQueryUI": true
+                var deferredAjax = [];
+                _.each(enrollmentsData, function(elem) {
+                    var ajaxCall = $j.get('/admin/students/sqlSectionExpr.html?relsectionfrn=003' + elem.secDcid, function (expression) {
+                        elem.expression = expression;
+                    });
+                    deferredAjax.push(ajaxCall);
                 });
 
-                if (displayDuplicateMsg) {
-                    var duplicatesTemplate = $j($j('#duplicates-template').html());
-                    var duplicatesSelect = $j('.fg-toolbar').eq(1);
-                    duplicatesTemplate.insertAfter(duplicatesSelect);
-                }
+                $j.when.apply($j, deferredAjax).done(function (expression, status, xhr) {
+                    var template = $j('#table-template').html();
+                    var context = {
+                        rows: enrollmentsData
+                    };
+                    var renderedTemplate = _.template(template, context);
 
-                // If a user clicks on the arrow buttons next to the List link in the side menu, and the following line wasn't here,
-                // the checkdup.html page would display because it was the last page that was sent to the user.
-                // So, send another request to make powerschool understand that it was really allenrollments.html
-                // that was last visited, so that should be page displayed when the arrow is clicked.
-                $j.get('/admin/students/allenrollments.html?frn=' + psData.frn + '&yearid');
+                    $j('.box-round').html(renderedTemplate); //insert new table
+
+                    $j('#enrollments-table').dataTable({
+                        "bPaginate": false,
+                        "bFilter": true,
+                        "bJQueryUI": true
+                    });
+
+                    if (displayDuplicateMsg) {
+                        var duplicatesTemplate = $j($j('#duplicates-template').html());
+                        var duplicatesSelect = $j('.fg-toolbar').eq(1);
+                        duplicatesTemplate.insertAfter(duplicatesSelect);
+                    }
+
+                    // If a user clicks on the arrow buttons next to the List link in the side menu, and the following line wasn't here,
+                    // the checkdup.html page would display because it was the last page that was sent to the user.
+                    // So, send another request to make powerschool understand that it was really allenrollments.html
+                    // that was last visited, so that should be page displayed when the arrow is clicked.
+                    $j.get('/admin/students/allenrollments.html?frn=' + psData.frn + '&yearid');
+                });
             });
-        });
+        }, 'json');
     });
 }());

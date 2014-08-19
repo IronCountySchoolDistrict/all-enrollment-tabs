@@ -14,7 +14,7 @@
 
 <!-- start CSS -->
 
-<link rel="stylesheet" href="/images/css/theme/crm-css/jquery-ui.custom.css" type="text/css">
+<link rel="stylesheet" href="/images/all-enrollment-tabs/css/theme/crm-css/jquery-ui.custom.css" type="text/css">
 <link rel="stylesheet" href="/admin/includes/template/reports-printable.css" type="text/css" media="print">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/css/jquery.dataTables.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/css/demo_table_jui.css">
@@ -91,4 +91,4 @@
 
 <div id="hidden-content" style="display: none"></div>
 
-<script type="text/javascript" src="/scripts/AllEnrollmentTabs/allenrollmenttabs.js"></script>
+<script type="text/javascript" src="/scripts/AllEnrollmentTabs/allenrollmenttabs.js?2349023408"></script>
