@@ -1,0 +1,20 @@
+[
+    ~[tlist_sql;
+        SELECT
+            DISTINCT ter.yearid,
+            ter.Abbreviation term
+        FROM CC
+        INNER JOIN Sections sec ON abs(cc.sectionid) = sec.id
+        INNER JOIN Terms ter ON sec.schoolid = ter.schoolid
+        AND substr(to_char(sec.termid),1,2) = ter.yearID
+        AND ter.isyearrec = 1
+        WHERE cc.studentID = ~[gpv:curstudid]
+        ORDER BY ter.yearid desc;
+    ]
+        {
+            "gpvfields": ["curstudid"],
+            "yearId": ~(yearid),
+            "term": "~(term)"
+        },
+    [/tlist_sql]{}
+]

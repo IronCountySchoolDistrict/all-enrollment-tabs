@@ -1,0 +1,94 @@
+
+<!-- start PS DATA -->
+<div id="ps-data"
+    data-ps='
+        {
+            "yearId": ~[if.~[gpv:yearid]=]null[else]"~[gpv:yearid]"[/if],
+            "curYearId": ~[if.~(curyearid)=]null[else]~(curyearid)[/if],
+            "curStudId": ~[if.~(curstudid)=]null[else]~(curstudid)[/if],
+            "frn": ~[if.~[gpv:frn]=]null[else]"~[gpv:frn]"[/if]
+        }
+    '
+    ></div>
+<!-- end PS DATA -->
+
+<!-- start CSS -->
+
+<link rel="stylesheet" href="/images/css/theme/crm-css/jquery-ui.custom.css" type="text/css">
+<link rel="stylesheet" href="/admin/includes/template/reports-printable.css" type="text/css" media="print">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/css/jquery.dataTables.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/css/demo_table_jui.css">
+
+<!-- end CSS -->
+
+<!-- start TEMPLATES -->
+<script type="text/template" id="tabs-template">
+    <ul id="tabs" class="tabs">
+        <%
+            _.each(context.tabs, function(tab){
+        %>
+            <li class="<%= tab.tab_class %>">
+                <a href="<%= tab.link_href %>"><%= tab.term %></a>
+            </li>
+        <%
+            });
+            if (context.showAllTab) {
+        %>
+            <li class="<%= context.allTab.tab_class %>">
+                <a href="<%= context.allTab.link_href %>">Show All</a>
+            </li>
+        <%
+            }
+        %>
+    </ul>
+</script>
+
+<script type="text/template" id="table-template">
+    <table id="enrollments-table" class="display" border="0">
+        <thead>
+        <tr>
+            <th>~[text:psx.html.admin_students.allenrollments.entered]</th>
+            <th>~[text:psx.html.admin_students.allenrollments.exited]</th>
+            <th>Term</th>
+            <th>~[text:psx.html.admin_students.allenrollments.exp]</th>
+            <th>~[text:psx.html.admin_students.allenrollments.course]</th>
+            <th>~[text:psx.html.admin_students.allenrollments.teacher]</th>
+            <th>~[text:psx.html.admin_students.allenrollments.view]</th>
+            <th>~[text:psx.html.admin_students.allenrollments.edit]</th>
+        </tr>
+        </thead>
+        <tbody>
+        <%
+            _.each(rows, function(row) {
+        %>
+        <tr>
+            <td <%= row.X %>><%= row.dateEnrolled %></td>
+            <td <%= row.X %>><%= row.dateLeft %></td>
+            <td <%= row.X %>><%= row.term %></td>
+            <td <%= row.X %>><%= row.expression %></td>
+            <td <%= row.X %>><%= row.courseName %> (<%= row.courseNumber %>.<%= row.sectionNumber %>)</td>
+            <td <%= row.X %>><%= row.teacher %></td>
+            <td><a href="scores.html?frn=<%= row.frn %>">View</a></td>
+            <td><a href="editcc.html?frn=<%= row.frn %>&breadcrumb=true">Edit</a></td>
+
+        </tr>
+
+        <%
+            });
+        %>
+        </tbody>
+    </table>
+</script>
+
+<script type="text/template" id="duplicates-template">
+    <br>
+    <div id="duplicates" style="color:red;">
+        This student has multiple overlapping enrollments in a single section.<br>This condition may cause
+        system instability and is always incorrect. <a href="tech/cleanDupCCs.html?frn=~(studentfrn)">Clean up overlapping enrollments</a>.
+    </div>
+</script>
+<!-- end TEMPLATES -->
+
+<div id="hidden-content" style="display: none"></div>
+
+<script type="text/javascript" src="/scripts/AllEnrollmentTabs/allenrollmenttabs.js"></script>

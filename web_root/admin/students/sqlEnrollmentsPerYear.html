@@ -1,0 +1,46 @@
+[
+    ~[tlist_sql;
+        SELECT
+            CASE
+                WHEN cc.SectionID < 0
+                THEN 'class=\"gray\"'
+            END x,
+            sec.schoolid,
+            sec.termid,
+            sec.ID,
+            cc.DateEnrolled, cc.DateLeft, ter.Abbreviation term,
+            cc.Expression,
+            crs.Course_Name, cc.Course_Number, cc.Section_Number, t.LastFirst teacher, cc.DCID
+        FROM CC
+        INNER JOIN Teachers t ON cc.TeacherID = t.ID
+        INNER JOIN Courses crs ON cc.Course_Number = crs.Course_Number
+        INNER JOIN Sections sec ON abs(cc.sectionid) = sec.id
+        INNER JOIN Terms ter ON sec.termid = ter.ID AND sec.schoolid = ter.schoolid
+        WHERE cc.studentID = ~[gpv:curstudid]
+        AND ter.yearid = ~[if.~[gpv:yearid]=]
+            (select max(substr(abs(CC.termid),1,2)) from CC where CC.studentID=~[gpv:curstudid])
+        [else]
+            substr(~[gpv:yearid],1,2)
+        [/if]
+        ORDER BY cc.DateLeft, cc.DateEnrolled
+    ]
+        {
+            "gpvfields": ["curstudid", "yearid"],
+            "X": "~(X)",
+            "schoolId": "~(schoolid)",
+            "termId": "~(termId)",
+            "id": "~(id)",
+            "dateEnrolled": "~(dateEnrolled;d)",
+            "dateLeft": "~(dateLeft;d)",
+            "term": "~(term)",
+            "expression": "~(expression)",
+            "courseName": "~(courseName)",
+            "courseNumber": "~(courseNumber)",
+            "sectionNumber": "~(sectionNumber)",
+            "teacher": "~(teacher)",
+            "dcid": "~(dcid)",
+            "frn": "004~(dcid)"
+        },
+
+    [/tlist_sql]{}
+]

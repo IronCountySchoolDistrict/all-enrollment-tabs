@@ -1,0 +1,37 @@
+<h5>
+    <table class="tableToGrid" border="0" cellspacing="0" cellpadding="4">
+        <thead>
+        <tr bgcolor="#f6f6f6">
+            <th class="bold" data-sorttype="date" data-sortorder="desc">
+                ~[text:psx.html.admin_students.allenrollments.entered]
+            </th>
+            <th class="bold" data-sorttype="date">~[text:psx.html.admin_students.allenrollments.exited]</th>
+            <th class="bold">~[text:psx.html.admin_students.allenrollments.exp]</th>
+            <th class="bold">~[text:psx.html.admin_students.allenrollments.course]</th>
+            <th class="bold">~[text:psx.html.admin_students.allenrollments.teacher]</th>
+            <th class="bold" data-sortable="false">~[text:psx.html.admin_students.allenrollments.view]</th>
+            <th class="bold" data-sortable="false">~[text:psx.html.admin_students.allenrollments.edit]</th>
+        </tr>
+</h5>
+</thead>
+<tbody>
+<tr bgcolor="#edf3fe">
+    <td>[dateenrolled]</td>
+    <td>[dateleft]</td>
+    <td>[classexpression]</td>
+    <td>[coursename]</td>
+    <td>[teachername]</td>
+    <td><a href="scores.html?frn=[frn]">~[text:psx.html.admin_students.allenrollments.view1]</a></td>
+    <td><a href="editcc.html?frn=[frn]&breadcrumb=true">~[text:psx.html.admin_students.allenrollments.edit1]</a></td>
+</tr>
+~[x:ENR_AllEnrollmentsView]
+</tbody>
+</table>
+
+<script>
+    ~[if.CheckDupCC_Failed]
+    var dupCC = true;
+    [else]
+    var dupCC = false;
+    [/if.CheckDupCC_Failed]
+</script>
