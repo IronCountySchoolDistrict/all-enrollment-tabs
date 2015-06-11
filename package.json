@@ -1,0 +1,19 @@
+{
+  "name": "all-enrollment-tabs",
+  "version": "1.0.0",
+  "description": "View all student enrollments separated by tabs",
+  "main": "",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IronCountySchoolDistrict/all-enrollment-tabs.git"
+  },
+  "author": "IronCountySchoolDistrict",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/IronCountySchoolDistrict/all-enrollment-tabs/issues"
+  },
+  "homepage": "https://github.com/IronCountySchoolDistrict/all-enrollment-tabs#readme"
+}
