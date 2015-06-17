@@ -13,12 +13,9 @@
 <!-- end PS DATA -->
 
 <!-- start CSS -->
-
-<link rel="stylesheet" href="<!-- @echo IMAGE_SERVER_URL -->/scripts/all-enrollment-tabs/css/jquery-ui.custom.css" type="text/css">
 <link rel="stylesheet" href="<!-- @echo IMAGE_SERVER_URL -->/scripts/all-enrollment-tabs/css/reports-printable.css" type="text/css" media="print">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/css/jquery.dataTables.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/css/demo_table_jui.css">
-
 <!-- end CSS -->
 
 <!-- start TEMPLATES -->
