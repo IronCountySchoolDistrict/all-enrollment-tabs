@@ -80,7 +80,7 @@ function createEnrollmentsUri(psData) {
         enrollmentsUri = enrollmentsPerYear + psData.curStudId + '&yearid=' + psData.yearId;
 
         // Else, no yearid gpv was passed in, so show the enrollments for the most recent year with enrollments.
-        // The SQL code that the enrollmentsUri calls will replace a null curyear
+        // The SQL code that the enrollmentsUri calls will replace a  curyear
     } else {
         enrollmentsUri = enrollmentsPerYear + psData.curStudId;
     }
