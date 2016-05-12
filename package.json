@@ -15,5 +15,15 @@
   "bugs": {
     "url": "https://github.com/IronCountySchoolDistrict/all-enrollment-tabs/issues"
   },
-  "homepage": "https://github.com/IronCountySchoolDistrict/all-enrollment-tabs#readme"
+  "homepage": "https://github.com/IronCountySchoolDistrict/all-enrollment-tabs#readme",
+  "dependencies": {
+    "babel": "^6.5.2",
+    "babel-cli": "^6.6.5",
+    "babel-register": "^6.7.2",
+    "gulp": "^3.9.1",
+    "gulp-ps-tasks": "^0.3.4"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.7.0"
+  }
 }

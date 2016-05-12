@@ -107,7 +107,8 @@ function createEnrollmentsUri(psData) {
             var tabsContext = createTabsContext(data, psData);
 
             var template = $j('#tabs-template').html();
-            var renderedTemplate = _.template(template, {context: tabsContext});
+            var compiledTemplate = _.template(template);
+            var renderedTemplate =  compiledTemplate({context: tabsContext})
             $j(renderedTemplate).insertBefore('.box-round');
         }, 'json');
 
@@ -136,7 +137,8 @@ function createEnrollmentsUri(psData) {
                     var context = {
                         rows: enrollmentsData
                     };
-                    var renderedTemplate = _.template(template, context);
+                    var compiledTemplate = _.template(template);
+                    var renderedTemplate =  compiledTemplate(context);
 
                     $j('.box-round').html(renderedTemplate); //insert new table
 
