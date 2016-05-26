@@ -1,0 +1,8 @@
+<permission_mappings>
+  <permission name='/admin/home.html'>
+    <implies allow="get">/ws/schema/query/org.irondistrict.all-enroll.tabs.all</implies>
+    <implies allow="post">/ws/schema/query/org.irondistrict.all-enroll.tabs.all</implies>
+    <implies allow="get">/ws/schema/query/org.irondistrict.all-enroll.tabs.year</implies>
+    <implies allow="post">/ws/schema/query/org.irondistrict.all-enroll.tabs.year</implies>
+  </permission>
+</permission_mappings>
