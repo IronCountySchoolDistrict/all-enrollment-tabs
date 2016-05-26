@@ -1,4 +1,4 @@
-/*global $j, require, _, dupCC*/
+/*global $, require, _, dupCC*/
 
 /**
  * Create the context for the year tabs template.
@@ -88,13 +88,14 @@ function createEnrollmentsUri(psData) {
     return enrollmentsUri;
 }
 
-(function () {
+(function ($) {
     'use strict';
 
-    var psData = $j.parseJSON($j('#ps-data').data().ps);
+    var psData = $.parseJSON($('#ps-data').data().ps);
 
-    //Remove extra br tags.
-    $j('br').remove();
+    //Remove extra br tags and feedback alert.
+    $('br').remove();
+    $('.feedback-alert').remove();
 
     var dataTablesUri = 'https://cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.min.js';
     require(['underscore', dataTablesUri], function () {
@@ -102,55 +103,55 @@ function createEnrollmentsUri(psData) {
         var enrollmentsUri = createEnrollmentsUri(psData);
 
         // Handle tabs
-        $j.get(yearsAttendedUri, function (data) {
+        $.get(yearsAttendedUri, function (data) {
             data.splice(-1, 1); //Last element will always be empty, so remove it.
             var tabsContext = createTabsContext(data, psData);
 
-            var template = $j('#tabs-template').html();
+            var template = $('#tabs-template').html();
             var compiledTemplate = _.template(template);
             var renderedTemplate =  compiledTemplate({context: tabsContext})
-            $j(renderedTemplate).insertBefore('.box-round');
+            $(renderedTemplate).insertBefore('.box-round');
         }, 'json');
 
         // Handle table
-        $j.get(enrollmentsUri, function (enrollmentsData) {
-            $j('.jqgridx').remove(); //remove old table
+        $.get(enrollmentsUri, function (enrollmentsData) {
+            $('.jqgridx').remove(); //remove old table
 
             // get and render new table
             enrollmentsData.splice(-1, 1); //Last element will always be empty, so remove it.
 
             var displayDuplicateMsg = false;
             var checkDuplicateUri = '/admin/students/checkdup.html?frn=' + psData.frn;
-            $j.get(checkDuplicateUri, function (checkDupData) {
-                $j('#hidden-content').html(checkDupData);
+            $.get(checkDuplicateUri, function (checkDupData) {
+                $('#hidden-content').html(checkDupData);
                 displayDuplicateMsg = dupCC;
                 var deferredAjax = [];
                 _.each(enrollmentsData, function(elem) {
-                    var ajaxCall = $j.get('/admin/students/sqlSectionExpr.html?relsectionfrn=003' + elem.secDcid, function (expression) {
+                    var ajaxCall = $.get('/admin/students/sqlSectionExpr.html?relsectionfrn=003' + elem.secDcid, function (expression) {
                         elem.expression = expression;
                     });
                     deferredAjax.push(ajaxCall);
                 });
 
-                $j.when.apply($j, deferredAjax).done(function (expression, status, xhr) {
-                    var template = $j('#table-template').html();
+                $.when.apply($, deferredAjax).done(function (expression, status, xhr) {
+                    var template = $('#table-template').html();
                     var context = {
                         rows: enrollmentsData
                     };
                     var compiledTemplate = _.template(template);
                     var renderedTemplate =  compiledTemplate(context);
 
-                    $j('.box-round').html(renderedTemplate); //insert new table
+                    $('.box-round').html(renderedTemplate); //insert new table
 
-                    $j('#enrollments-table').dataTable({
+                    $('#enrollments-table').dataTable({
                         "bPaginate": false,
                         "bFilter": true,
                         "bJQueryUI": true
                     });
 
                     if (displayDuplicateMsg) {
-                        var duplicatesTemplate = $j($j('#duplicates-template').html());
-                        var duplicatesSelect = $j('.fg-toolbar').eq(1);
+                        var duplicatesTemplate = $($('#duplicates-template').html());
+                        var duplicatesSelect = $('.fg-toolbar').eq(1);
                         duplicatesTemplate.insertAfter(duplicatesSelect);
                     }
 
@@ -158,9 +159,9 @@ function createEnrollmentsUri(psData) {
                     // the checkdup.html page would display because it was the last page that was sent to the user.
                     // So, send another request to make powerschool understand that it was really allenrollments.html
                     // that was last visited, so that should be page displayed when the arrow is clicked.
-                    $j.get('/admin/students/allenrollments.html?frn=' + psData.frn + '&yearid');
+                    $.get('/admin/students/allenrollments.html?frn=' + psData.frn + '&yearid');
                 });
             });
         }, 'json');
     });
-}());
+}($));
