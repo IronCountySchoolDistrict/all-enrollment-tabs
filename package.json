@@ -24,6 +24,6 @@
     "gulp-ps-tasks": "^0.3.4"
   },
   "devDependencies": {
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.7.0"
+    "babel-plugin-transform-es2015-modules-amd": "^6.7.0"
   }
 }

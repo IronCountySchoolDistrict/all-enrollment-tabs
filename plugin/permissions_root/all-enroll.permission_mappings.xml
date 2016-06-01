@@ -4,5 +4,9 @@
     <implies allow="post">/ws/schema/query/org.irondistrict.all-enroll.tabs.all</implies>
     <implies allow="get">/ws/schema/query/org.irondistrict.all-enroll.tabs.year</implies>
     <implies allow="post">/ws/schema/query/org.irondistrict.all-enroll.tabs.year</implies>
+    <implies allow="get">/ws/schema/query/org.irondistrict.all-enroll.tabs.most-recent-year</implies>
+    <implies allow="post">/ws/schema/query/org.irondistrict.all-enroll.tabs.most-recent-year</implies>    
+    <implies allow="get">/ws/schema/query/org.irondistrict.all-enroll.years.attended</implies>
+    <implies allow="post">/ws/schema/query/org.irondistrict.all-enroll.years.attended</implies>
   </permission>
 </permission_mappings>
