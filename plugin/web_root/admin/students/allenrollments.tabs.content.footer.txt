@@ -1,16 +1,14 @@
 
 <!-- start PS DATA -->
-<div id="ps-data"
-    data-ps='
-        {
-            "yearId": ~[if.~[gpv:yearid]=]null[else]"~[gpv:yearid]"[/if],
-            "curYearId": ~[if.~(curyearid)=]null[else]~(curyearid)[/if],
-            "curStudId": ~[if.~(curstudid)=]null[else]~(curstudid)[/if],
-            "frn": ~[if.~[gpv:frn]=]null[else]"~[gpv:frn]"[/if]
-        }
-    '
-    ></div>
-<!-- end PS DATA -->
+<script>
+  if (!psData) {
+    var psData = {};
+  }
+  psData.yearId = ~[if.~[gpv:yearid]=]null[else]"~[gpv:yearid]"[/if];
+  psData.curYearId = ~[if.~(curyearid)=]null[else]~(curyearid)[/if];
+  psData.curStudId = ~[if.~(curstudid)=]null[else]~(curstudid)[/if];
+  psData.frn = ~[if.~[gpv:frn]=]null[else]"~[gpv:frn]"[/if];
+</script>
 
 <!-- start CSS -->
 <link rel="stylesheet" href="/scripts/all-enrollment-tabs/css/reports-printable.css" type="text/css" media="print">
@@ -59,17 +57,15 @@
             _.each(rows, function(row) {
         %>
         <tr>
-            <td <%= row.X %>><%= row.dateEnrolled %></td>
-            <td <%= row.X %>><%= row.dateLeft %></td>
-            <td <%= row.X %>><%= row.term %></td>
-            <td <%= row.X %>><%= row.expression %></td>
-            <td <%= row.X %>><%= row.courseName %> (<%= row.courseNumber %>.<%= row.sectionNumber %>)</td>
-            <td <%= row.X %>><%= row.teacher %></td>
-            <td><a href="scores.html?frn=<%= row.frn %>">View</a></td>
-            <td><a href="editcc.html?frn=<%= row.frn %>&breadcrumb=true">Edit</a></td>
-
+            <td <% if (row.status === 'INACTIVE') { %> class="gray" <% } %>><%= row.date_enrolled %></td>
+            <td <% if (row.status === 'INACTIVE') { %> class="gray" <% } %>><%= row.date_left %></td>
+            <td <% if (row.status === 'INACTIVE') { %> class="gray" <% } %>><%= row.term %></td>
+            <td <% if (row.status === 'INACTIVE') { %> class="gray" <% } %>><%= row.expression %></td>
+            <td <% if (row.status === 'INACTIVE') { %> class="gray" <% } %>><%= row.course_name %> (<%= row.course_number %>.<%= row.section_number %>)</td>
+            <td <% if (row.status === 'INACTIVE') { %> class="gray" <% } %>><%= row.teacher_name %></td>
+            <td <% if (row.status === 'INACTIVE') { %> class="gray" <% } %>><a href="scores.html?frn=004<%= row.cc_dcid %>">View</a></td>
+            <td <% if (row.status === 'INACTIVE') { %> class="gray" <% } %>><a href="editcc.html?frn=004<%= row.cc_dcid %>&breadcrumb=true">Edit</a></td>
         </tr>
-
         <%
             });
         %>
@@ -88,4 +84,17 @@
 
 <div id="hidden-content" style="display: none"></div>
 
-<script type="text/javascript" src="/scripts/all-enrollment-tabs/js/allenrollmenttabs.js"></script>
+<script>
+  require.config({
+    paths: {
+      dataTables: 'https://cdnjs.cloudflare.com/ajax/libs/datatables/1.9.4/jquery.dataTables.min',
+      bluebird: 'https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.0.2/bluebird',
+      allEnrollments: '/scripts/all-enrollment-tabs/js/allenrollmenttabs',
+      service: '/scripts/all-enrollment-tabs/js/service'
+    }
+  });
+
+  require(['allEnrollments'], allEnrollments => {
+    allEnrollments.default();
+  });
+</script>

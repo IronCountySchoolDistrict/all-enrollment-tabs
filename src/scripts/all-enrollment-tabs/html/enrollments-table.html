@@ -1,0 +1,34 @@
+<table id="enrollments-table" class="display" border="0">
+    <thead>
+    <tr>
+        <th>~[text:psx.html.admin_students.allenrollments.entered]</th>
+        <th>~[text:psx.html.admin_students.allenrollments.exited]</th>
+        <th>Term</th>
+        <th>~[text:psx.html.admin_students.allenrollments.exp]</th>
+        <th>~[text:psx.html.admin_students.allenrollments.course]</th>
+        <th>~[text:psx.html.admin_students.allenrollments.teacher]</th>
+        <th>~[text:psx.html.admin_students.allenrollments.view]</th>
+        <th>~[text:psx.html.admin_students.allenrollments.edit]</th>
+    </tr>
+    </thead>
+    <tbody>
+    <%
+        _.each(rows, function(row) {
+    %>
+    <tr>
+        <td <%= row.X %>><%= row.dateEnrolled %></td>
+        <td <%= row.X %>><%= row.dateLeft %></td>
+        <td <%= row.X %>><%= row.term %></td>
+        <td <%= row.X %>><%= row.expression %></td>
+        <td <%= row.X %>><%= row.courseName %> (<%= row.courseNumber %>.<%= row.sectionNumber %>)</td>
+        <td <%= row.X %>><%= row.teacher %></td>
+        <td><a href="scores.html?frn=<%= row.frn %>">View</a></td>
+        <td><a href="editcc.html?frn=<%= row.frn %>&breadcrumb=true">Edit</a></td>
+
+    </tr>
+
+    <%
+        });
+    %>
+    </tbody>
+</table>

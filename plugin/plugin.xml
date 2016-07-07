@@ -9,4 +9,27 @@
     <publisher name="Iron County School District Data Team">
         <contact email="data@ironmail.org"/>
     </publisher>
+
+    <access_request>
+      <field table="cc" field="course_number" access="ViewOnly" />
+      <field table="cc" field="section_number" access="ViewOnly" />
+      <field table="cc" field="dateenrolled" access="ViewOnly" />
+      <field table="cc" field="dateleft" access="ViewOnly" />
+      <field table="cc" field="sectionid" access="ViewOnly" />
+      <field table="cc" field="studentid" access="ViewOnly" />
+      <field table="cc" field="teacherid" access="ViewOnly" />
+      <field table="cc" field="dcid" access="ViewOnly" />
+      <field table="courses" field="course_name" access="ViewOnly" />
+      <field table="sections" field="id" access="ViewOnly" />
+      <field table="sections" field="dcid" access="ViewOnly" />
+      <field table="sections" field="schoolid" access="ViewOnly" />
+      <field table="sections" field="termid" access="ViewOnly" />
+      <field table="students" field="dcid" access="ViewOnly" />
+      <field table="students" field="id" access="ViewOnly" />
+      <field table="teachers" field="lastfirst" access="ViewOnly" />
+      <field table="teachers" field="id" access="ViewOnly" />
+      <field table="terms" field="abbreviation" access="ViewOnly" />
+      <field table="terms" field="id" access="ViewOnly" />
+      <field table="terms" field="schoolid" access="ViewOnly" />
+  </access_request>
 </plugin>

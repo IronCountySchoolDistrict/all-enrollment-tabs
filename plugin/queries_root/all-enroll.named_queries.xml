@@ -1,0 +1,191 @@
+<queries>
+    <query flattened="true" name="org.irondistrict.all-enroll.tabs.all" coreTable="students">
+        <args>
+            <arg description="STUDENTS.DCID" name="student_dcid" required="false" type="primitive"/>
+        </args>
+        <columns>
+            <!-- cc.sectionid used as proxy column for section_status -->
+            <column column="cc.sectionid">section_status</column>
+            <column column="sections.schoolid">school_id</column>
+            <column column="sections.termid">term_id</column>
+            <column column="sections.id">section_id</column>
+            <column column="sections.dcid">section_dcid</column>
+            <column column="cc.dateenrolled">date_enrolled</column>
+            <column column="cc.dateleft">date_left</column>
+            <column column="terms.abbreviation">term</column>
+            <column column="courses.course_name">course_name</column>
+            <column column="cc.course_number">course_number</column>
+            <column column="cc.section_number">section_number</column>
+            <column column="teachers.lastfirst">teacher_name</column>
+            <column column="cc.dcid">cc_dcid</column>
+        </columns>
+        <sql>
+            <![CDATA[
+              SELECT
+                (CASE
+                WHEN course_curriculum.sectionid < 0
+                  THEN 'INACTIVE'
+                ELSE 'ACTIVE'
+                END) AS sectionid,
+                sections.schoolid,
+                sections.termid,
+                sections.id,
+                sections.dcid section_dcid,
+                course_curriculum.dateenrolled,
+                course_curriculum.dateleft,
+                terms.abbreviation,
+                courses.course_name,
+                course_curriculum.course_number,
+                course_curriculum.section_number,
+                teachers.lastfirst,
+                course_curriculum.dcid cc_dcid
+              FROM cc course_curriculum
+                INNER JOIN teachers ON course_curriculum.teacherid = teachers.id
+                INNER JOIN courses ON course_curriculum.course_number = courses.course_number
+                INNER JOIN sections ON abs(course_curriculum.sectionid) = sections.id
+                INNER JOIN terms ON sections.termid = terms.id AND sections.schoolid = terms.schoolid
+                INNER JOIN students ON course_curriculum.studentid = students.id
+              WHERE students.dcid = :student_dcid
+              ORDER BY course_curriculum.dateleft, course_curriculum.dateenrolled
+      ]]>
+        </sql>
+    </query>
+
+    <query flattened="true" name="org.irondistrict.all-enroll.tabs.year" coreTable="students">
+        <args>
+            <arg description="STUDENTS.DCID" name="student_dcid" required="false" type="primitive"/>
+            <arg description="TERMS.YEARID" name="year_id" required="true" type="primitive" default="~(curyearid)"/>
+        </args>
+        <columns>
+            <!-- course_curriculum.sectionid used as proxy column for status -->
+            <column column="cc.sectionid">status</column>
+            <column column="sections.schoolid">school_id</column>
+            <column column="sections.termid">term_id</column>
+            <column column="sections.id">section_id</column>
+            <column column="sections.dcid">section_dcid</column>
+            <column column="cc.dateenrolled">date_enrolled</column>
+            <column column="cc.dateleft">date_left</column>
+            <column column="terms.abbreviation">term</column>
+            <column column="courses.course_name">course_name</column>
+            <column column="cc.course_number">course_number</column>
+            <column column="cc.section_number">section_number</column>
+            <column column="teachers.lastfirst">teacher_name</column>
+            <column column="cc.dcid">cc_dcid</column>
+        </columns>
+        <sql>
+            <![CDATA[
+            SELECT
+              (CASE
+               WHEN course_curriculum.sectionid < 0
+                 THEN 'INACTIVE'
+               ELSE 'ACTIVE'
+               END) AS               sectionid,
+              sections.schoolid,
+              sections.termid,
+              sections.id,
+              sections.dcid          section_dcid,
+              course_curriculum.dateenrolled,
+              course_curriculum.dateleft,
+              terms.abbreviation,
+              courses.course_name,
+              course_curriculum.course_number,
+              course_curriculum.section_number,
+              teachers.lastfirst,
+              course_curriculum.dcid cc_dcid
+            FROM cc course_curriculum
+              INNER JOIN teachers ON course_curriculum.teacherid = teachers.id
+              INNER JOIN courses ON course_curriculum.course_number = courses.course_number
+              INNER JOIN sections ON abs(course_curriculum.sectionid) = sections.id
+              INNER JOIN terms ON sections.termid = terms.id AND sections.schoolid = terms.schoolid
+              INNER JOIN students ON course_curriculum.studentid = students.id
+            WHERE students.dcid = :student_dcid AND
+                  terms.yearid = :year_id
+            ORDER BY course_curriculum.dateleft, course_curriculum.dateenrolled
+      ]]>
+        </sql>
+    </query>
+
+    <query flattened="true" name="org.irondistrict.all-enroll.tabs.most-recent-year" coreTable="students">
+        <args>
+            <arg description="STUDENTS.DCID" name="student_dcid" required="false" type="primitive"/>
+        </args>
+        <columns>
+            <!-- course_curriculum.sectionid used as proxy column for status -->
+            <column column="cc.sectionid">status</column>
+            <column column="sections.schoolid">school_id</column>
+            <column column="sections.termid">term_id</column>
+            <column column="sections.id">section_id</column>
+            <column column="sections.dcid">section_dcid</column>
+            <column column="cc.dateenrolled">date_enrolled</column>
+            <column column="cc.dateleft">date_left</column>
+            <column column="terms.abbreviation">term</column>
+            <column column="courses.course_name">course_name</column>
+            <column column="cc.course_number">course_number</column>
+            <column column="cc.section_number">section_number</column>
+            <column column="teachers.lastfirst">teacher_name</column>
+            <column column="cc.dcid">cc_dcid</column>
+        </columns>
+        <sql>
+            <![CDATA[
+            SELECT
+            (CASE
+             WHEN course_curriculum.sectionid < 0
+               THEN 'INACTIVE'
+             ELSE 'ACTIVE'
+             END) AS               sectionid,
+            sections.schoolid,
+            sections.termid,
+            sections.id            section_id,
+            sections.dcid          section_dcid,
+            course_curriculum.dateenrolled,
+            course_curriculum.dateleft,
+            terms.abbreviation,
+            courses.course_name,
+            course_curriculum.course_number,
+            course_curriculum.section_number,
+            teachers.lastfirst,
+            course_curriculum.dcid cc_dcid
+          FROM cc course_curriculum
+            INNER JOIN teachers ON course_curriculum.teacherid = teachers.id
+            INNER JOIN courses ON course_curriculum.course_number = courses.course_number
+            INNER JOIN sections ON abs(course_curriculum.sectionid) = sections.id
+            INNER JOIN terms ON sections.termid = terms.id AND sections.schoolid = terms.schoolid
+            INNER JOIN students ON course_curriculum.studentid = students.id
+          WHERE students.dcid = :student_dcid AND
+                terms.yearid = (
+                  SELECT max(substr(abs(inner_cc.termid), 1, 2))
+                  FROM cc inner_cc
+                  WHERE inner_cc.studentid = (
+                    SELECT students.id
+                    FROM students
+                    WHERE students.dcid = :student_dcid))
+          ORDER BY course_curriculum.dateleft, course_curriculum.dateenrolled
+      ]]>
+        </sql>
+    </query>
+
+    <query flattened="true" name="org.irondistrict.all-enroll.years.attended" coreTable="students">
+        <args>
+            <arg description="STUDENTS.DCID" name="student_dcid" required="false" type="primitive"/>
+        </args>
+        <columns>
+            <column column="terms.yearid">year_id</column>
+            <column column="terms.abbreviation">term</column>
+        </columns>
+        <sql>
+            <![CDATA[
+              SELECT DISTINCT
+                terms.yearid,
+                terms.abbreviation
+              FROM cc cc
+                INNER JOIN sections sections ON abs(cc.sectionid) = sections.id
+                INNER JOIN terms terms ON sections.schoolid = terms.schoolid AND
+                                        substr(to_char(sections.termid), 1, 2) = terms.yearid AND
+                                        terms.isyearrec = 1
+                INNER JOIN students students ON cc.studentid = students.id
+              WHERE students.dcid = :student_dcid
+              ORDER BY terms.yearid DESC
+        ]]>
+        </sql>
+    </query>
+</queries>

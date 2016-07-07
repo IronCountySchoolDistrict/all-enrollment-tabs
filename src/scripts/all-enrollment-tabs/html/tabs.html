@@ -1,0 +1,18 @@
+<ul id="tabs" class="tabs">
+    <%
+        _.each(context.tabs, function(tab){
+    %>
+        <li class="<%= tab.tab_class %>">
+            <a href="<%= tab.link_href %>"><%= tab.term %></a>
+        </li>
+    <%
+        });
+        if (context.showAllTab) {
+    %>
+        <li class="<%= context.allTab.tab_class %>">
+            <a href="<%= context.allTab.link_href %>">Show All</a>
+        </li>
+    <%
+        }
+    %>
+</ul>
