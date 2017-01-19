@@ -91,7 +91,8 @@
       bluebird: 'https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.0.2/bluebird',
       allEnrollments: '/scripts/all-enrollment-tabs/js/allenrollmenttabs',
       service: '/scripts/all-enrollment-tabs/js/service'
-    }
+    },
+    urlArgs: 'v1.0.0'
   });
 
   require(['allEnrollments'], allEnrollments => {
