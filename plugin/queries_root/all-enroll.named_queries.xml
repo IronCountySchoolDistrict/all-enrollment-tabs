@@ -110,7 +110,7 @@
             <arg description="STUDENTS.DCID" name="student_dcid" required="false" type="primitive"/>
         </args>
         <columns>
-            <!-- course_curriculum.sectionid used as proxy column for status -->
+            <!-- cc.sectionid used as proxy column for status -->
             <column column="cc.sectionid">status</column>
             <column column="sections.schoolid">school_id</column>
             <column column="sections.termid">term_id</column>
